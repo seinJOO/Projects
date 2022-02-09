@@ -57,29 +57,29 @@
                 <ul class="nav navbar-nav">
                 	
                     <li>
-                        <a href="/MyWeb/index.jsp">HOME</a>
+                        <a href="/MyWeb/index.do">HOME</a>
                     </li>
                     <li>
-                        <a href="/MyWeb/member/member.jsp">Member</a>
+                        <a href="/MyWeb/member.do">Member</a>
                     </li>
                     <li>
-                        <a href="#">BOARD</a>
+                        <a href="/MyWeb/board/list.board">BOARD</a>
                     </li>
                     <c:choose>
                     <c:when test="${sessionScope.id == null}">
 					<li>
-                        <a href="/MyWeb/user/user_login.jsp">LOGIN</a>
+                        <a href="/MyWeb/login.do">LOGIN</a>
                     </li>
                     <li>
-                        <a href="/MyWeb/user/join.jsp" style="color:red">JOIN</a>
+                        <a href="/MyWeb/join.do" style="color:red">JOIN</a>
                     </li>
 					</c:when>
 					<c:when test="${sessionScope.id != null}">					
 					<li>
-                        <a href="/MyWeb/user/user_mypage.jsp" style="color:blue">MYPAGE</a>
+                        <a href="/MyWeb/mypage.do" style="color:blue">MYPAGE</a>
                     </li>
                     <li>
-                        <a href="/MyWeb/user/user_logout.jsp" style="color:red">LOGOUT</a>
+                        <a href="/MyWeb/logout.do" style="color:red">LOGOUT</a>
                     </li>
    					</c:when>
    					</c:choose>

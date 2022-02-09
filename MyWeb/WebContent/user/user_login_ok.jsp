@@ -10,8 +10,9 @@
 	String pw = request.getParameter("pw");
 	
 	UserDAO dao = UserDAO.getInstance();
-	UserVO vo = new UserVO();
+	UserVO vo = dao.getUserInfo(id);
 	String pwchk = dao.login(id);
+	String name = vo.getName();
 	
 	try {
 		if (pwchk == null) {	%>
@@ -19,6 +20,7 @@
 			history.go(-1);
 <%		} else if (pw.equals(pwchk)) {
 			session.setAttribute("id", id);
+			session.setAttribute("name", name);
 			response.sendRedirect("/MyWeb/user/user_mypage.jsp");
 			
 		} else {	%>

@@ -25,7 +25,7 @@
 		<div align="center" class="address-bar">	
 		<h2>로그인</h2>	
 		<hr>
-			<form name="loginform" action="user_login_ok.jsp" method="post">
+			<form name="loginform" action="/MyWeb/user/user_login_ok.jsp" method="post">
 			<table class="tbl">
 				<tr>
 				<td>아이디  </td>
