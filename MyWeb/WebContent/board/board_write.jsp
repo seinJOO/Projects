@@ -19,18 +19,18 @@
 			<table border="1" width="500">
 				<tr>
 					<td>작성자</td>
-					<td><input type="text" name="writer" size="10" 
+					<td><input type="text" name="writer" size="10" class="form-control"
 					<% if (name != null) {	%>
 						value = "${name }" readonly
 					<% } %>		></td>
 				</tr>
 				<tr>
 					<td>글제목</td>
-					<td><input type="text" name="title"></td>
+					<td><input type="text" name="title" class="form-control"></td>
 				</tr>
 				<tr>
 					<td>글내용</td>
-					<td><textarea rows="10" style="width:100%;" name="content"></textarea></td>
+					<td><textarea rows="10" style="width:100%;" name="content" class="form-control"></textarea></td>
 				</tr>
 				<!-- 글 등록 메뉴 -->
 				<tr>

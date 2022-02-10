@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 
 import javax.naming.InitialContext;
+import javax.servlet.http.Cookie;
 import javax.sql.DataSource;
 
 import com.myweb.util.JdbcUtil;
@@ -69,7 +70,9 @@ public class BoardDAO {
 			rs = pstmt.executeQuery();
 			
 			while (rs.next()) {
-				BoardVO vo = new BoardVO(rs.getInt("num"), rs.getString("writer"), rs.getString("title"), rs.getString("content"), rs.getTimestamp("regdate"), rs.getInt("hit"));								
+				BoardVO vo = new BoardVO(rs.getInt("num"), rs.getString("writer"), 
+										rs.getString("title"), rs.getString("content"), 
+										rs.getTimestamp("regdate"), rs.getInt("hit"));								
 				list.add(vo);
 			}
 			
@@ -80,9 +83,77 @@ public class BoardDAO {
 		return list;
 	}
 	
+	public BoardVO getContent(String num) {
+		BoardVO vo = null;
+		String sql = "SELECT * FROM board WHERE num = ?";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, num);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				vo = new BoardVO(rs.getInt("num"), rs.getString("writer"), 
+								rs.getString("title"), rs.getString("content"), 
+								rs.getTimestamp("regdate"), rs.getInt("hit"));
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		return vo;
+	}
 	
+	public void update(String num, String title, String content) {
 	
+		String sql = "UPDATE board SET title = ?, content = ? WHERE num = ?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, title);
+			pstmt.setString(2, content);
+			pstmt.setString(3, num);
+			pstmt.executeUpdate();			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+	}
 	
+	public void delete(String num) {
+		String sql = "DELETE FROM board WHERE num = ?";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, num);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}		
+	}
+	
+	public void upHit(String num) {
+		
+		String sql = "UPDATE board SET hit = hit + 1 WHERE num = ?";
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, num);
+			pstmt.executeUpdate();
+						
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}		
+	}
 	
 	
 }

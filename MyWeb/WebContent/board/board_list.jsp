@@ -14,19 +14,17 @@
 <div class="brand">BOARD</div>        
 <div class="address-bar">매일의 기록</div>
 <%@ include file="/include/_header.jsp" %>
-
-
 <div class="container" align = "center">	
 	<h3>MyWeb 게시판</h3>
 	<table class="table table-bordered">
 		<!-- 게시물 리스트 출력  -->
 		<thead style="text-align : center; background-color : #d4d4d499;">
 			<tr>
-				<th>글 번호</th>
-				<th>작성자</th>
-				<th>제목</th>
-				<th>날짜</th>
-				<th>조회수</th>
+				<th width="10%">글 번호</th>
+				<th width="20%">작성자</th>
+				<th width="30%">제목</th>
+				<th width="20%">날짜</th>
+				<th width="20%">조회수</th>
 			</tr>
 		</thead>
 		<!-- DB로부터 게시글 정보를 불러옴 -->
@@ -35,7 +33,7 @@
 			<tr>
 				<td>${vo.num }</td>
 				<td>${vo.writer }</td>
-				<td><a href="#">${vo.title }</a></td>
+				<td><a href="content.board?num=${vo.num }">${vo.title }</a></td>
 				<td>${vo.regdate }</td>
 				<td>${vo.hit }</td>
 			</tr>
