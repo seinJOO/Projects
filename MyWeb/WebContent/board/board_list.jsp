@@ -58,13 +58,18 @@
 		<!-- 페이징 작업 공간 -->
 		<div align="center">
 			<ul class="pagination pagination-sm">
-				<li><a href="#">이전 페이지</a></li>
-				<li><a href="#"> 1 </a></li>
-				<li><a href="#">다음 페이지</a></li>
+			<c:if test="${pagevo.prev }">
+				<li><a href="list.board?pageNum=${pagevo.startPage - 1 }">이전 페이지</a></li>
+			</c:if>
+			<c:forEach var="num" begin="${pagevo.startPage }" end="${pagevo.endPage }" >				
+				<li class="${num == pagevo.pageNum ? 'active' : '' }">
+				<a href="list.board?pageNum=${ num}" > ${num } </a></li>
+			</c:forEach>
+			<c:if test="${pagevo.next }">
+				<li><a href="list.board?pageNum=${pagevo.endPage + 1 }">다음 페이지</a></li>
+			</c:if>
 			</ul>
 		</div>
-	
-	
 
 </div>
 </body>

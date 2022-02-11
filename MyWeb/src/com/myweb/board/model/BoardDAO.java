@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.servlet.http.Cookie;
 import javax.sql.DataSource;
 
+import com.myweb.util.Criteria;
 import com.myweb.util.JdbcUtil;
 
 public class BoardDAO {
@@ -61,6 +62,59 @@ public class BoardDAO {
 		}
 	}
 	
+	// 페이징 게시물 목록 처리 메서드
+	public ArrayList<BoardVO> getList(Criteria cri) {
+		ArrayList<BoardVO> list = new ArrayList<BoardVO>();
+		String sql =  "select * from (select rownum r, b.* from (select * from board order by num desc) b where ? >= rownum) where r >= ? order by r";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cri.getCount_oracle());
+			pstmt.setInt(2, cri.getPageStart());
+			// 검증
+			System.out.println("끝:" + cri.getCount_oracle());
+			System.out.println("시작:"+cri.getPageStart());
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				BoardVO vo = new BoardVO(rs.getInt("num"), rs.getString("writer"), 
+						rs.getString("title"), rs.getString("content"), 
+						rs.getTimestamp("regdate"), rs.getInt("hit"));
+				list.add(vo);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JdbcUtil.close(conn, pstmt, rs);
+		}
+		
+		return list;
+		
+	}
+	
+	public int getTotal() {
+		int total = 0;
+		String sql = "SELECT COUNT(*) as total FROM board";
+		
+		try {
+			conn = ds.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				total = rs.getInt("total");
+				System.out.println("총 게시물 개수 :" + total);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+		return total;
+	}
+	
+	
+/*	페이징 작업 전 게시글 목록 조회
 	public ArrayList<BoardVO> getList(){
 		ArrayList<BoardVO> list = new ArrayList<>();
 		String sql = "SELECT * FROM board ORDER BY num DESC";
@@ -82,7 +136,7 @@ public class BoardDAO {
 		
 		return list;
 	}
-	
+*/	
 	public BoardVO getContent(String num) {
 		BoardVO vo = null;
 		String sql = "SELECT * FROM board WHERE num = ?";
@@ -154,6 +208,8 @@ public class BoardDAO {
 			JdbcUtil.close(conn, pstmt, rs);
 		}		
 	}
+	
+	
 	
 	
 }

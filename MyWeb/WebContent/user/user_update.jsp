@@ -9,7 +9,7 @@
 
 	String id = (String) session.getAttribute("id"); 
 	UserDAO dao = UserDAO.getInstance();
-	UserVO vo = dao.getUserInfo(id);	
+	UserVO vo = dao.getUserInfo(id);
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	
 	
