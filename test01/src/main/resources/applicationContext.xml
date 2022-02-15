@@ -2,29 +2,61 @@
 
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://springframework.org/schema/beans/spring-beans.xsd">
-
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						   http://www.springframework.org/schema/beans/spring-beans.xsd 
+						   http://www.springframework.org/schema/context 
+						   http://www.springframework.org/schema/context/spring-context-4.3.xsd" >
+	
+	<!-- 의존 객체 자동 주입을 위해서는 컨포넌트 스캔을 사용 - 컨포넌트 스캔은 @component로 설정된 Bean으로 IoC(Inversion of Control)를 만듬
+		(스캔을 사용하지 않으면 bean 선언은 모두 주석처리/삭제) -->
+	<context:component-scan base-package="test02.ex01.construct"/>
+	<context:component-scan base-package="test03.ex01.auto"/>
+	
+	
 	<!-- 
 	xmlns : 속성값은 네임스페이스로 태그를 식별하기 위한 이름 (= schema의 beans라는 것을 참조하겠다)
 	xmlns:xsi : XML 정보를 가리키는 주소
 	xsi:schemaLocation : 두 개의 값이 공백으로 구분됨. 첫 번째는 namespace(이름), 두 번째는 namespace의 위치
 	
-	Spring은 bean 설정을 따로 해줘야 객체를 끌어다 사용할 수 있다! 클래스와의 이름 구분을 위해 bean id는 소문자로 쓸 예정~
-	  -->
-<bean id="good" class="test01.SpringTest" />
-
-<!-- DI 테스트 -->
-<bean id="chef" class="test02.ex01.construct.Chef" />
-<!-- 생성자 주입 -->
-<bean id="hotel" class="test02.ex01.construct.Hotel" >
-	<constructor-arg ref="chef"></constructor-arg>
-</bean>
+	Spring은 bean 설정을 따로 해줘야 객체를 끌어다 사용할 수 있다! 클래스와의 이름 구분을 위해 bean id는 소문자로 쓸 예정~ -->
+	
+ 	<bean id="good" class="test01.SpringTest" scope="prototype" /> 
+			<!-- 스프링 컨테이너의 빈은 기본적으로 싱글톤이며, prototype 설정 시 반대로 된다! -->
+			
+	<!-- Qualifier 예제 -->
+	<bean id="chef" class="test02.ex01.construct.Chef">
+		<qualifier value="c1"></qualifier>
+	</bean>
+	<bean id="chef2" class="test02.ex01.construct.Chef">
+		<qualifier value="c2"></qualifier>
+	</bean>
+ 
+	<!-- DI 테스트
+	<bean id="chef" class="test02.ex01.construct.Chef" /> -->
+	<!-- 생성자 주입
+	<bean id="hotel" class="test02.ex01.construct.Hotel" >
+		<constructor-arg ref="chef"></constructor-arg>
+	</bean>  -->
 
 <!-- DI = 의존객체 주입 / setter로 주입하기 -->
 <bean id="DBdev" class="test02.ex02.setter.DatabaseDev">
 	<property name="url" value="jdbc:oracle:thin:@localhost:1521/XEPDB1" />
 	<property name="uid" value="myjsp" />
 	<property name="upw" value="myjsp" />
+</bean>
+
+<!-- setter 주입 -->
+<bean id="memTest1" class="test03.ex01.auto.MemTest">
+	<property name="uid" value="today"/>
+	<property name="upw" value="0215"/>
+	<qualifier value="t1" />
+</bean>
+
+<bean id="memTest2" class="test03.ex01.auto.MemTest">
+	<property name="uid" value="valentine"/>
+	<property name="upw" value="0214"/>
+	<qualifier value="t2" />
 </bean>
 
 </beans>
